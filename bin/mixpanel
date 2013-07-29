@@ -1,0 +1,81 @@
+#!/usr/bin/env node
+
+'use strict';
+
+var program = require('commander')
+  , Mixpanel = require('../lib/mixpanel-cli.js')
+  , asciify = require('asciify')
+  , _ = require('underscore')
+  , colors = require('colors');
+
+program
+  .version('0.0.1');
+
+program
+  .command('foo')
+  .description('do a foo')
+  .action(function() {
+    program.prompt('name: ', function(name){
+      console.log('hi %s', name);
+      process.stdin.destroy();
+    });
+  });
+
+program
+  .command('all')
+  .action(function() {
+    var client = new Mixpanel({
+        apiKey: process.env.MIXPANEL_API_KEY
+      , apiSecret: process.env.MIXPANEL_API_SECRET
+    });
+
+    client.fetchEvents(function() {
+      var sortedEvents = _.sortBy(client.data.events, function(event) {
+        return event.amount;
+      });
+
+      process.stdout.write('\u001B[2J\u001B[0;0f');
+
+      _.each(sortedEvents, function(event) {
+        if (event.amount !== 0) {
+          asciify(event.amount, {font: 'univers'}, function(err, number) {
+            asciify(event.event, {font: 'cybermedium'}, function(err, label) {
+              process.stdout.write(number.rainbow);
+              process.stdout.write(label.cyan + '\n\n\n\n');
+            });
+          });
+        }
+      });
+    });
+  });
+
+program
+  .command('choose')
+  .action(function() {
+    var client = new Mixpanel({
+        apiKey: process.env.MIXPANEL_API_KEY
+      , apiSecret: process.env.MIXPANEL_API_SECRET
+    });
+
+    client.fetchEvents(function() {
+      console.log('Which event do you want to check?');
+      var eventNames = client.eventNames();
+
+      program.choose(eventNames, function(i) {
+
+        var event = client.data.events[i];
+
+        asciify(event.amount, {font: 'univers'}, function(err, number) {
+          asciify(event.event, {font: 'cybermedium'}, function(err, label) {
+            process.stdout.write('\u001B[2J\u001B[0;0f');
+            process.stdout.write(number.rainbow);
+            process.stdout.write(label.cyan);
+            process.stdin.destroy();
+          });
+        });
+      });
+    });
+
+  });
+
+program.parse(process.argv);
