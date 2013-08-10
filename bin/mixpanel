@@ -3,23 +3,14 @@
 'use strict';
 
 var program = require('commander')
-  , Mixpanel = require('../lib/mixpanel-cli.js')
+  , Mixpanel = require('mixpanel-data')
   , asciify = require('asciify')
   , _ = require('underscore')
-  , colors = require('colors');
+  , colors = require('colors')
+  ;
 
 program
   .version('0.0.1');
-
-program
-  .command('foo')
-  .description('do a foo')
-  .action(function() {
-    program.prompt('name: ', function(name){
-      console.log('hi %s', name);
-      process.stdin.destroy();
-    });
-  });
 
 program
   .command('all')
