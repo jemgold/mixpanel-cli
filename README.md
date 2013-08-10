@@ -1,4 +1,4 @@
-# mixpanel-cli [![Build Status](https://secure.travis-ci.org/jongd/mixpanel-cli.png?branch=master)](http://travis-ci.org/jongd/mixpanel-cli)
+# mixpanel-cli
 
 Vanity Metrics in your terminal
 
@@ -15,7 +15,7 @@ mixpanel all
 _(Coming soon)_
 
 ## Examples
-_(Coming soon)_
+![http://c.jon.gd/image/2B1J1S2B0v0w/mixpanel-cli.png](http://c.jon.gd/image/2B1J1S2B0v0w/mixpanel-cli.png)
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
